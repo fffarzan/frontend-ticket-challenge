@@ -9,18 +9,18 @@
     <br />
     <div>
       <div class="studium-seats">
-        <div
-          v-for="(seat, index) in seatsShown"
-          :key="index"
-          :class="seat ? 'seat-reserved' : ''"
-          class="seat"
-          :to="{
-            name: 'seat-seat-number',
-            params: { seatNumber: index + 1 },
-          }"
-          @click="onChooseSeat(index + 1)"
-        >
-          {{ index + 1 }}
+        <div v-for="(seat, index) in seatsShown" :key="index">
+          <div v-if="seat" class="seat seat-reserved">{{ index + 1 }}</div>
+          <nuxt-link
+            v-else
+            class="seat"
+            :to="{
+              name: 'seat-id',
+              params: { id: index + 1 },
+            }"
+          >
+            {{ index + 1 }}
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -76,12 +76,6 @@ export default {
           .finally(() => {})
 
       getFn(MapService, 'getAllAsync')
-    },
-    onChooseSeat(seat) {
-      // this.$route.push({
-      //   name: 'seat-seat-number',
-      //   params: { 'seat-number': seat },
-      // })
     },
     getMap(mapId) {
       const getFn = (service, method) =>
@@ -140,6 +134,7 @@ export default {
   justify-content: center;
 }
 .seat {
+  display: block;
   width: 60px;
   height: 60px;
   line-height: 60px;
