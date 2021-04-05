@@ -5,22 +5,11 @@
       <button @click="onGetMap()">Choose a seat</button>
     </div>
     <br />
-    <p v-if="seatsShown.length" class="studium-seats-heading">Active Seats:</p>
-    <br />
     <div>
       <div class="studium-seats">
         <div v-for="(seat, index) in seatsShown" :key="index">
-          <div v-if="seat" class="seat seat-reserved">{{ index + 1 }}</div>
-          <nuxt-link
-            v-else
-            class="seat"
-            :to="{
-              name: 'seat-id',
-              params: { id: index + 1, mapId },
-            }"
-          >
-            {{ index + 1 }}
-          </nuxt-link>
+          <SeatReserved v-if="seat" :seat-number="index" />
+          <SeatFree v-else :seat-number="index" :map-id="mapId" />
         </div>
       </div>
     </div>
@@ -32,8 +21,14 @@
 
 <script>
 import { MapService } from '@/services/map-service'
+import SeatReserved from '@/components/seat-reserved'
+import SeatFree from '@/components/seat-free'
 
 export default {
+  components: {
+    SeatReserved,
+    SeatFree,
+  },
   layout: 'default',
   data() {
     return {
@@ -104,10 +99,6 @@ export default {
 .choose-seat-btn {
   text-align: center;
 }
-.studium-seats-heading {
-  text-align: center;
-  font-size: 25px;
-}
 .choose-seat-btn button {
   border: 1px solid yellowgreen;
   color: white;
@@ -128,21 +119,6 @@ export default {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-}
-.seat {
-  display: block;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  border-radius: 3px;
-  background-color: green;
-  margin: 3px;
-  text-align: center;
-  cursor: pointer;
-}
-.seat-reserved {
-  background-color: red;
-  cursor: not-allowed;
 }
 .more {
   text-align: center;
