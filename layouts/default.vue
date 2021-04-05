@@ -5,9 +5,7 @@
     </header>
 
     <!-- loader -->
-    <div v-if="isLoaderShowing" class="loader">
-      <p>Loading...</p>
-    </div>
+    <Loader />
 
     <main class="main">
       <Nuxt />
@@ -16,11 +14,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import Loader from '@/components/loader'
 
 export default {
-  computed: {
-    ...mapState('loader', ['isLoaderShowing']),
+  components: {
+    Loader,
   },
 }
 </script>
