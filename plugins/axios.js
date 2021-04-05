@@ -1,6 +1,6 @@
 import { apiUrl } from '@/utils/environment'
 
-export default ({ $axios }, inject) => {
+export default ({ store, $axios }, inject) => {
   // create base url with axios
   $axios.setBaseURL(apiUrl.baseURL)
 
@@ -9,9 +9,12 @@ export default ({ $axios }, inject) => {
     let result
 
     try {
+      store.dispatch('loader/toggle', true)
       result = await fn($axios)
     } catch (e) {
       result = false
+    } finally {
+      store.dispatch('loader/toggle', false)
     }
 
     return result
