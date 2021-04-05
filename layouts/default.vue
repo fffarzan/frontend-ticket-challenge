@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="header">
-      <p>Volleyball Federation Ticket Center</p>
+      <nuxt-link to="/">Volleyball Federation Ticket Center</nuxt-link>
     </header>
 
     <main class="main">
