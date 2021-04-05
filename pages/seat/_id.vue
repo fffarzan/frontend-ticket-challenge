@@ -21,6 +21,7 @@
 import { MapService } from '@/services/map-service'
 
 export default {
+  layout: 'default',
   data() {
     return {
       seatNumber: null,
