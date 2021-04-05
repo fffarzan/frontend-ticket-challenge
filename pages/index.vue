@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <br />
     <div class="choose-seat-btn">
       <button @click="onGetMap()">Choose a seat</button>
@@ -101,10 +101,6 @@ export default {
 </script>
 
 <style>
-.container {
-  max-width: 1200px;
-  margin: 15px auto;
-}
 .choose-seat-btn {
   text-align: center;
 }

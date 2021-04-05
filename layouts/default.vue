@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Nuxt />
+    <header class="header">
+      <p>Volleyball Federation Ticket Center</p>
+    </header>
+
+    <main class="main">
+      <Nuxt />
+    </main>
   </div>
 </template>
 
@@ -15,6 +21,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  text-align: center;
 }
 
 *,
@@ -29,32 +36,18 @@ a {
   text-decoration: none;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+.main {
+  max-width: 1200px;
+  margin: 15px auto;
+  padding: 15px;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.header {
+  background-color: darkolivegreen;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 50px;
 }
 </style>
