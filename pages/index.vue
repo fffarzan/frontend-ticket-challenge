@@ -1,63 +1,167 @@
 <template>
   <div class="container">
+    <br />
+    <div class="choose-seat-btn">
+      <button @click="onGetMap()">Choose a seat</button>
+    </div>
+    <br />
+    <p v-if="seatsShown.length" class="studium-seats-heading">Active Seats:</p>
+    <br />
     <div>
-      <Logo />
-      <h1 class="title">frontend-ticket-challenge</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
+      <div class="studium-seats">
+        <div
+          v-for="(seat, index) in seatsShown"
+          :key="index"
+          :class="seat ? 'seat-reserved' : ''"
+          class="seat"
+          :to="{
+            name: 'seat-seat-number',
+            params: { seatNumber: index + 1 },
+          }"
+          @click="onChooseSeat(index + 1)"
         >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+          {{ index + 1 }}
+        </div>
       </div>
     </div>
+    <p v-if="seatsShown.length" class="more" @click="onShowMoreItems()">
+      Show more
+    </p>
   </div>
 </template>
 
 <script>
-export default {}
+import { MapService } from '@/services/map-service'
+
+export default {
+  layout: 'default',
+  data() {
+    return {
+      mapId: '',
+      seats: [],
+      seatsShown: [],
+      pageUnit: 1000,
+      page: 1,
+    }
+  },
+  watch: {
+    mapId: {
+      handler(value) {
+        this.getMap(value)
+      },
+    },
+  },
+  methods: {
+    onGetMap() {
+      this.seats.length = 0
+      this.seatsShown.length = 0
+      this.getRandomMapId()
+    },
+    onShowMoreItems() {
+      const firstItem = this.pageUnit * (this.page - 1)
+      const lastItem = this.pageUnit * this.page
+      this.seatsShown = this.seatsShown.concat(
+        this.seats.slice(firstItem, lastItem)
+      )
+      this.page++
+    },
+    getRandomMapId() {
+      const getFn = (service, method) =>
+        service[method](this)
+          .then((res) => {
+            const randomNumber = Math.floor(Math.random() * 10)
+            this.mapId = res.map_ids[randomNumber]
+          })
+          .catch((e) => Error(e))
+          .finally(() => {})
+
+      getFn(MapService, 'getAllAsync')
+    },
+    onChooseSeat(seat) {
+      // this.$route.push({
+      //   name: 'seat-seat-number',
+      //   params: { 'seat-number': seat },
+      // })
+    },
+    getMap(mapId) {
+      const getFn = (service, method) =>
+        service[method](this, mapId)
+          .then((res) => {
+            for (let i = 0; i < res.length; i++) {
+              for (let j = 0; j < res[i].length; j++) {
+                this.seats.push(res[i][j])
+              }
+            }
+
+            this.seatsShown = this.seatsShown.concat(
+              this.seats.slice(0, this.pageUnit * this.page)
+            )
+          })
+          .catch((e) => Error(e))
+          .finally(() => {})
+
+      getFn(MapService, 'getAsync')
+    },
+  },
+}
 </script>
 
 <style>
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 1200px;
+  margin: 15px auto;
+}
+.choose-seat-btn {
   text-align: center;
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.studium-seats-heading {
+  text-align: center;
+  font-size: 25px;
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.choose-seat-btn button {
+  border: 1px solid yellowgreen;
+  color: white;
+  background-color: yellowgreen;
+  width: 240px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 15px auto;
+  font-size: 25px;
+  cursor: pointer;
+  transition: 0.1s;
 }
-
-.links {
-  padding-top: 15px;
+.choose-seat-btn button:hover {
+  background-color: aqua;
+  border: 1px solid aqua;
+}
+.studium-seats {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+.seat {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 3px;
+  background-color: green;
+  margin: 3px;
+  text-align: center;
+  cursor: pointer;
+}
+.seat-reserved {
+  background-color: red;
+  cursor: not-allowed;
+}
+.more {
+  text-align: center;
+  font-size: 18px;
+  margin: 25px 0;
+  color: greenyellow;
+  transition: 0.1s;
+  cursor: pointer;
+}
+.more:hover {
+  color: aqua;
 }
 </style>
