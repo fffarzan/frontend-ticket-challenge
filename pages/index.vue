@@ -16,7 +16,7 @@
             class="seat"
             :to="{
               name: 'seat-id',
-              params: { id: index + 1 },
+              params: { id: index + 1, mapId },
             }"
           >
             {{ index + 1 }}
