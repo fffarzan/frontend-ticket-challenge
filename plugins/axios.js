@@ -12,6 +12,7 @@ export default ({ store, $axios }, inject) => {
       store.dispatch('loader/toggle', true)
       result = await fn($axios)
     } catch (e) {
+      store.dispatch('dialog/toggle')
       result = false
     } finally {
       store.dispatch('loader/toggle', false)

@@ -4,12 +4,15 @@
       <nuxt-link to="/">Volleyball Federation Ticket Center</nuxt-link>
     </header>
 
-    <!-- loader -->
-    <Loader />
-
     <main class="main">
       <Nuxt />
     </main>
+
+    <!-- loader -->
+    <Loader />
+
+    <!-- error dialog -->
+    <ErrDialog />
   </div>
 </template>
 
