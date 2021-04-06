@@ -1,7 +1,9 @@
 <template>
-  <div v-if="isLoaderShowing" class="loader">
-    <p>Loading...</p>
-  </div>
+  <transition name="fade">
+    <div v-if="isLoaderShowing" class="loader">
+      <p>Loading...</p>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -25,5 +27,13 @@ export default {
   font-size: 30px;
   background-color: rgba(0, 0, 0, 0.9);
   line-height: 100vh;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
